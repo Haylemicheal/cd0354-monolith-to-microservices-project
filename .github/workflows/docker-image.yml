@@ -16,3 +16,9 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run: docker-compose -f docker-compose-build.yaml build --parallel
+    
+    - name: Log in to Docker Hub
+    - uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+    - with:
+          username: ${{ DOCKERHUB_EMAIL }}
+          password: ${{ DOCKERHUB_PASSWORD }}
