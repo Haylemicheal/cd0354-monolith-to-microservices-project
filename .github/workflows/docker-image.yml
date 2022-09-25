@@ -21,11 +21,15 @@ jobs:
       run: docker login -u $USER -p $PASSWORD
     - name: Build the Docker image
       run: docker-compose -f docker-compose-build.yaml build --parallel
-    - name: Dockerpush reverseproxy
-      run: docker push ${{secrets.DOCKERHUB_USER}}/reverseproxy 
-    - name: Dockerpush frontend
-      run: docker push ${{secrets.DOCKERHUB_USER}}/udagram-frontend
-    - name: Dockerpush api-user
-      run: docker push ${{secrets.DOCKERHUB_USER}}/udagram-api-user
-    - name: Dockerpush api-feed
-      run: docker push ${{secrets.DOCKERHUB_USER}}/udagram-api-feed
+    - name: Tag and push images 
+      env:
+        USER: ${{secrets.DOCKERHUB_UNAME}}
+      run: |
+        docker image tag reverseproxy $USER/reverseproxy
+        docker push $USER/reverseproxy
+        docker image tag udagram-frontend $USER/udagram-frontend
+        docker push $USER/udagram-frontend
+        docker image tag udagram-api-user $USER/udagram-api-user
+        docker push $USER/udagram-api-user
+        docker image tag udagram-api-feed $USER/udagram-api-feed
+        docker push $USER/udagram-api-feed
