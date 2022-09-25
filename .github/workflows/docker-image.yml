@@ -14,11 +14,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Login to dockerhub
+      env:
+        USER: ${{secrets.DOCKERHUB_UNAME}}
+        PASSWORD: ${{secrets.DOCKERHUB_PASSWORD}}
+      run: docker login -u $USER -p $PASSWORD
     - name: Build the Docker image
       run: docker-compose -f docker-compose-build.yaml build --parallel
-    
-    - name: Log in to Docker Hub
-    - uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
-    - with:
-          username: ${{ DOCKERHUB_EMAIL }}
-          password: ${{ DOCKERHUB_PASSWORD }}
+    - name: Dockerpush reverseproxy
+      run: docker push ${{secrets.DOCKERHUB_USER}}/reverseproxy 
+    - name: Dockerpush frontend
+      run: docker push ${{secrets.DOCKERHUB_USER}}/udagram-frontend
+    - name: Dockerpush api-user
+      run: docker push ${{secrets.DOCKERHUB_USER}}/udagram-api-user
+    - name: Dockerpush api-feed
+      run: docker push ${{secrets.DOCKERHUB_USER}}/udagram-api-feed
