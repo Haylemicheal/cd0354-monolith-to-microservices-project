@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+   
+kind: Deployment
+   
+metadata:
+   
+  labels:
+   
+    app.kubernetes.io/name: load-balancer
+   
+  name: reverse-proxy
+   
+spec:
+   
+  replicas: 5
+   
+  selector:
+   
+    matchLabels:
+   
+      app.kubernetes.io/name: load-balancer
+   
+  template:
+   
+    metadata:
+   
+      labels:
+   
+        app.kubernetes.io/name: load-balancer
+   
+    spec:
+   
+      containers:
+   
+      - image: haylemichealberihun/reverseproxy
+   
+        name: reverseproxy
+   
+        ports:
+   
+        - containerPort: 8080
+   
